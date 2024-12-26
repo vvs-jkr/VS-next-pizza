@@ -5,6 +5,7 @@ import { useSet } from 'react-use'
 
 import { FilterCheckbox, FilterChecboxProps } from './filter-checkbox'
 import { Input } from '../ui/input'
+import { Skeleton } from '../ui'
 
 type Item = FilterChecboxProps
 
@@ -13,6 +14,7 @@ interface Props {
   items: Item[]
   defaultItems: Item[]
   limit?: number
+  loading?: boolean
   searchInputPlaceholder?: string
   className?: string
   onChange?: (values: string[]) => void
@@ -26,12 +28,29 @@ export const CheckboxFiltersGroup: React.FC<Props> = ({
   limit = 5,
   searchInputPlaceholder = 'Поиск...',
   className,
+  loading,
   onChange,
   defaultValue,
 }) => {
   const [showAll, setShowAll] = React.useState(false)
   const [selected, { add, toggle }] = useSet<string>(new Set([]))
   const [searchValue, setSearchValue] = React.useState('')
+
+  if (loading) {
+    return (
+      <div className={className}>
+        <p className="font-bold mb-3">{title}</p>
+
+        {...Array(limit)
+          .fill(0)
+          .map((_, index) => (
+            <Skeleton key={index} className="h-6 mb-4 rounded-[8px]" />
+          ))}
+
+        <Skeleton className="w-28 h-6 mb-4 rounded-[8px]" />
+      </div>
+    )
+  }
 
   const list = showAll
     ? items.filter((item) =>
@@ -47,15 +66,15 @@ export const CheckboxFiltersGroup: React.FC<Props> = ({
     toggle(value)
   }
 
-  React.useEffect(() => {
-    if (defaultValue) {
-      defaultValue.forEach(add)
-    }
-  }, [defaultValue?.length])
+//   React.useEffect(() => {
+//     if (defaultValue) {
+//       defaultValue.forEach(add)
+//     }
+//   }, [defaultValue?.length])
 
-  React.useEffect(() => {
-    onChange?.(Array.from(selected))
-  }, [selected])
+//   React.useEffect(() => {
+//     onChange?.(Array.from(selected))
+//   }, [selected])
 
   return (
     <div className={className}>
