@@ -12,13 +12,15 @@ type Item = FilterChecboxProps
 interface Props {
   title: string
   items: Item[]
-  defaultItems: Item[]
+  defaultItems?: Item[]
   limit?: number
   loading?: boolean
   searchInputPlaceholder?: string
-  className?: string
-  onChange?: (values: string[]) => void
+  onClickCheckbox?: (id: string) => void
   defaultValue?: string[]
+  selected?: Set<string>
+  className?: string
+  name?: string
 }
 
 export const CheckboxFiltersGroup: React.FC<Props> = ({
@@ -29,12 +31,18 @@ export const CheckboxFiltersGroup: React.FC<Props> = ({
   searchInputPlaceholder = 'Поиск...',
   className,
   loading,
-  onChange,
+  onClickCheckbox,
+  selected,
   defaultValue,
+  name,
 }) => {
   const [showAll, setShowAll] = React.useState(false)
-  const [selected, { add, toggle }] = useSet<string>(new Set([]))
+  //   const [selected, { add, toggle }] = useSet<string>(new Set([]))
   const [searchValue, setSearchValue] = React.useState('')
+
+  const onChangeSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value)
+  }
 
   if (loading) {
     return (
@@ -54,27 +62,23 @@ export const CheckboxFiltersGroup: React.FC<Props> = ({
 
   const list = showAll
     ? items.filter((item) =>
-        item.text.toLowerCase().includes(searchValue.toLowerCase())
+        item.text.toLowerCase().includes(searchValue.toLocaleLowerCase())
       )
-    : defaultItems?.slice(0, limit)
+    : (defaultItems || items).slice(0, limit)
 
-  const onChangeSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value)
-  }
+  //   const onCheckedChange = (value: string) => {
+  //     toggle(value)
+  //   }
 
-  const onCheckedChange = (value: string) => {
-    toggle(value)
-  }
+  //   React.useEffect(() => {
+  //     if (defaultValue) {
+  //       defaultValue.forEach(add)
+  //     }
+  //   }, [defaultValue?.length])
 
-//   React.useEffect(() => {
-//     if (defaultValue) {
-//       defaultValue.forEach(add)
-//     }
-//   }, [defaultValue?.length])
-
-//   React.useEffect(() => {
-//     onChange?.(Array.from(selected))
-//   }, [selected])
+  //   React.useEffect(() => {
+  //     onChange?.(Array.from(selected))
+  //   }, [selected])
 
   return (
     <div className={className}>
@@ -93,12 +97,13 @@ export const CheckboxFiltersGroup: React.FC<Props> = ({
       <div className="flex flex-col gap-4 max-h-96 pr-2 overflow-auto scrollbar">
         {list.map((item, index) => (
           <FilterCheckbox
-            onCheckedChange={() => onCheckedChange(item.value)}
-            checked={selected.has(item.value)}
             key={index}
-            value={item.value}
             text={item.text}
+            value={item.value}
             endAdornment={item.endAdornment}
+            checked={selected?.has(item.value)}
+            onCheckedChange={() => onClickCheckbox?.(item.value)}
+            name={name}
           />
         ))}
       </div>
