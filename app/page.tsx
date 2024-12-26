@@ -1,4 +1,11 @@
-import { Container, Filters, SortPopup, Title, TopBar } from '@/components/shared'
+import {
+  Container,
+  Filters,
+  ProductsGroupList,
+  SortPopup,
+  Title,
+  TopBar,
+} from '@/components/shared'
 import { Categories } from '@/components/shared/categories'
 
 export default function Home() {
@@ -11,28 +18,36 @@ export default function Home() {
 
       <Container className="mt-10 pb-14">
         <div className="flex gap-[60px]">
-			{/* Filter */}
+          {/* Filter */}
           <div className="w-[250px]">
-				<Filters />
-			 </div>
+            <Filters />
+          </div>
 
+          {/* Pizzas */}
 
-			 {/* Pizzas */}
-
-			 {/* <div className="flex-1">
+          <div className="flex-1">
             <div className="flex flex-col gap-16">
-              <ProductsGroupList title="Пиццы" items={[1, 2, 3, 4, 5]} />
-              <ProductsGroupList title="Комбо" items={[1, 2, 3, 4, 5]} />
+              <ProductsGroupList
+                title="Пиццы"
+                items={[1, 2, 3, 4, 5]}
+                categoryId={1}
+              />
+              <ProductsGroupList
+                title="Комбо"
+                items={[1, 2, 3, 4, 5]}
+                categoryId={2}
+              />
             </div>
 
+            {/*
             <div className="flex items-center gap-6 mt-12">
               <Pagination pageCount={3} />
               <span className="text-sm text-gray-400">5 из 65</span>
             </div>
 
+        </div>*/}
+          </div>
         </div>
-			 </div>*/}
-        </div> 
       </Container>
     </>
   )
