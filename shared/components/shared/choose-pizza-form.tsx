@@ -7,66 +7,56 @@ import { PizzaImage } from './pizza-image'
 import { Title } from './title'
 import { Button } from '../ui'
 import { GroupVariants } from './group-variants'
-import {
-  PizzaSize,
-  pizzaSizes,
-  PizzaType,
-  pizzaTypes,
-} from '@/shared/constants/pizza'
+import { PizzaSize, PizzaType, pizzaTypes } from '@/shared/constants/pizza'
 import { cn } from '@/shared/lib/utils'
+import { IngredientItem } from './ingredient-item'
+import { getPizzaDetails } from '@/shared/lib'
+import { usePizzaOptions } from '@/shared/hooks'
 
 interface Props {
-  imageUrl: string
   name: string
+  items: ProductItem[]
+  imageUrl: string
   ingredients: Ingredient[]
-  items?: ProductItem[]
-  loading?: boolean
-  onSubmit?: (itemId: number, ingredients: number[]) => void
+  //   loading?: boolean
+  //   onSubmit?: (itemId: number, ingredients: number[]) => void
+  onClickAddCart?: () => void
   className?: string
 }
 
-/**
- * Форма выбора ПИЦЦЫ
- */
 export const ChoosePizzaForm: React.FC<Props> = ({
   name,
   items,
   imageUrl,
   ingredients,
-  loading,
-  onSubmit,
+  //   loading,
+  //   onSubmit,
+  onClickAddCart,
   className,
 }) => {
-  const [size, setSize] = React.useState<PizzaSize>(20)
-  const [type, setType] = React.useState<PizzaType>(1)
+  const {
+    size,
+    type,
+    selectedIngredients,
+    availableSizes,
+    setSize,
+    setType,
+    addIngredient,
+  } = usePizzaOptions(items)
 
-  const textDetaills = 'sfssdfsfsgdfgdfgdg'
-  const totalPrice = 1000
+  const { totalPrice, textDetaills } = getPizzaDetails(
+    type,
+    size,
+    items,
+    ingredients,
+    selectedIngredients
+  )
 
-  //   const {
-  //     size,
-  //     type,
-  //     selectedIngredients,
-  //     availableSizes,
-  //     currentItemId,
-  //     setSize,
-  //     setType,
-  //     addIngredient,
-  //   } = usePizzaOptions(items)
-
-  //   const { totalPrice, textDetaills } = getPizzaDetails(
-  //     type,
-  //     size,
-  //     items,
-  //     ingredients,
-  //     selectedIngredients
-  //   )
-
-  //   const handleClickAdd = () => {
-  //     if (currentItemId) {
-  //       onSubmit(currentItemId, Array.from(selectedIngredients))
-  //     }
-  //   }
+  const handleClickAdd = () => {
+    onClickAddCart?.()
+    //  if (currentItemId) {
+    //    onSubmit(currentItemId, Array.from(selectedIngredients))
+  }
 
   return (
     <div className={cn(className, 'flex flex-1')}>
@@ -79,7 +69,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 
         <div className="flex flex-col gap-4 mt-5">
           <GroupVariants
-            items={pizzaSizes}
+            items={availableSizes}
             value={String(size)}
             onClick={(value) => setSize(Number(value) as PizzaSize)}
           />
@@ -93,7 +83,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({
 
         <div className="bg-gray-50 p-5 rounded-md h-[420px] overflow-auto scrollbar mt-5">
           <div className="grid grid-cols-3 gap-3">
-            {/* {ingredients.map((ingredient) => (
+            {ingredients.map((ingredient) => (
               <IngredientItem
                 key={ingredient.id}
                 name={ingredient.name}
@@ -102,13 +92,13 @@ export const ChoosePizzaForm: React.FC<Props> = ({
                 onClick={() => addIngredient(ingredient.id)}
                 active={selectedIngredients.has(ingredient.id)}
               />
-            ))} */}
+            ))}
           </div>
         </div>
 
         <Button
           //  loading={loading}
-          //  onClick={handleClickAdd}
+          onClick={handleClickAdd}
           className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10"
         >
           Добавить в корзину за {totalPrice} ₽

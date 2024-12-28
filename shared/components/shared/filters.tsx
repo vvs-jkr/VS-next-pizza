@@ -5,8 +5,8 @@ import React from 'react'
 import { Title } from './title'
 import { Input } from '@/shared/components/ui/input'
 import { RangeSlider } from '../ui/range-slider'
-import { useFilters, useQueryFilters, useIngredients } from '@/shared/hooks'
 import { CheckboxFiltersGroup } from '@/shared/components/shared/checkbox-filters-group'
+import { useFilters, useQueryFilters, useIngredients } from '@/shared/hooks'
 
 interface Props {
   className?: string

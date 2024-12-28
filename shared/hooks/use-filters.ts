@@ -1,4 +1,4 @@
-import { Filters } from '../../components/shared/filters'
+import { Filters } from '../../shared/components/shared/filters'
 import { useSearchParams } from 'next/navigation'
 import { useSet } from 'react-use'
 import React from 'react'

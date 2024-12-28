@@ -16,9 +16,6 @@ interface Props {
   onClickAdd?: VoidFunction
 }
 
-/**
- * Форма выбора ПИЦЦЫ
- */
 export const ChooseProductForm: React.FC<Props> = ({
   name,
   imageUrl,
