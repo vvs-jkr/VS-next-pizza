@@ -3,13 +3,14 @@ import { cn } from '@/shared/lib/utils'
 import { Minus, Plus } from 'lucide-react'
 import { Button } from '@/shared/components/ui/button'
 
-interface Props {
+export interface CountButtonProps {
   value?: number
   size?: 'sm' | 'lg'
+  onClick?: (type: 'plus' | 'minus') => void
   className?: string
 }
 
-export const CountButton: React.FC<Props> = ({
+export const CountButton: React.FC<CountButtonProps> = ({
   className,
   value = 1,
   size = 'sm',
