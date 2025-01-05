@@ -1,4 +1,4 @@
-import { InfoBlock } from '@/shared/components';
+import { InfoBlock } from "@/shared/components";
 
 export default function UnauthorizedPage() {
   return (
@@ -9,5 +9,5 @@ export default function UnauthorizedPage() {
         imageUrl="/assets/images/lock.png"
       />
     </div>
-  );
+  )
 }
