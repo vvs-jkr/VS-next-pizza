@@ -11,11 +11,10 @@ model User {
    id Int @id @default(autoincrement())
 
    fullName String
-   email    String @unique
-   password String @unique
-
-   role     UserRole @default(USER)
-   verified DateTime
+   email    String    @unique
+   password String
+   role     UserRole  @default(USER)
+   verified DateTime?
 
    provider   String?
    providerId String?
@@ -49,8 +48,6 @@ model Product {
    ingredients Ingredient[]
    items       ProductItem[]
 
-   // pizzas Pizza[]
-
    createdAt DateTime @default(now())
    updatedAt DateTime @updatedAt
 
@@ -65,33 +62,11 @@ model ProductItem {
    size      Int?
    pizzaType Int?
 
-   product   Product    @relation(fields: [productId], references: [id])
-   productId Int
    cartItems CartItem[]
+
+   product   Product @relation(fields: [productId], references: [id])
+   productId Int
 }
-
-// model Pizza {
-//    id Int @id @default(autoincrement())
-
-//    price    Int
-//    size     Int
-//    type     Int
-//    carbs    Int
-//    fats     Int
-//    kcal     Int
-//    proteins Int
-//    weight   Int
-
-//    ingredients Ingredient[]
-//    cartItems   CartItem[]
-
-//    productId Int
-//    product   Product @relation(fields: [productId], references: [id])
-
-//    active    Boolean  @default(false)
-//    createdAt DateTime @default(now())
-//    updatedAt DateTime @updatedAt
-// }
 
 model Ingredient {
    id Int @id @default(autoincrement())
@@ -102,8 +77,6 @@ model Ingredient {
 
    products  Product[]
    cartItems CartItem[]
-
-   // pizzas Pizza[]
 
    createdAt DateTime @default(now())
    updatedAt DateTime @updatedAt
@@ -120,7 +93,6 @@ model Cart {
    totalAmount Int @default(0)
 
    items CartItem[]
-   // orders Order[]
 
    createdAt DateTime @default(now())
    updatedAt DateTime @updatedAt
@@ -135,36 +107,13 @@ model CartItem {
    productItem   ProductItem @relation(fields: [productItemId], references: [id])
    productItemId Int
 
-   // pizzaId Int
-   // pizza   Pizza @relation(fields: [pizzaId], references: [id])
-
-   // cartId Int
-   // cart   Cart @relation(fields: [cartId], references: [id])
-
-   // userId Int
-   // user   User @relation(fields: [userId], references: [id])
-
-   // ingredients Ingredient[]
-
-   quantity Int
+   quantity Int @default(1)
 
    ingredients Ingredient[]
 
    createdAt DateTime @default(now())
    updatedAt DateTime @updatedAt
-   // User         User?       @relation(fields: [userId], references: [id])
-   // userId       Int?
-   // Pizza     Pizza?   @relation(fields: [pizzaId], references: [id])
-   // pizzaId   Int?
-   // Ingredient   Ingredient? @relation(fields: [ingredientId], references: [id])
-   // ingredientId Int?
 
-   // User         User?       @relation(fields: [userId], references: [id])
-   // userId       Int?
-   // Pizza        Pizza?      @relation(fields: [pizzaId], references: [id])
-   // pizzaId      Int?
-   // Ingredient   Ingredient? @relation(fields: [ingredientId], references: [id])
-   // ingredientId Int?
    User   User? @relation(fields: [userId], references: [id])
    userId Int?
 }
@@ -176,9 +125,6 @@ model Order {
    userId Int?
 
    token String
-
-   // cart   Cart @relation(fields: [cartId], references: [id])
-   // cartId Int
 
    status      OrderStatus @default(PENDING)
    totalAmount Int
@@ -199,14 +145,34 @@ model Order {
 model VerificationCode {
    id Int @id @default(autoincrement())
 
-   user   User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+   user   User @relation(fields: [userId], references: [id])
    userId Int   @unique
 
-   code String @unique
+   code String
 
    createdAt DateTime @default(now())
 
    @@unique([userId, code])
+}
+
+model Story {
+   id              Int    @id @default(autoincrement())
+   previewImageUrl String
+
+   items StoryItem[]
+
+   createdAt DateTime @default(now())
+}
+
+model StoryItem {
+   id Int @id @default(autoincrement())
+
+   storyId Int
+   story   Story @relation(fields: [storyId], references: [id])
+
+   sourceUrl String
+
+   createdAt DateTime @default(now())
 }
 
 enum OrderStatus {

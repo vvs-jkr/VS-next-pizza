@@ -10,17 +10,21 @@ import { cn } from '@/shared/lib/utils'
 interface Props {
   imageUrl: string
   name: string
-  //   loading?: boolean;
+  price: number
+  loading?: boolean
   //   onSubmit: (itemId: number, ingredients: number[]) => void;
+  onSubmit?: VoidFunction
   className?: string
-  onClickAdd?: VoidFunction
+  //   onClickAdd?: VoidFunction
 }
 
 export const ChooseProductForm: React.FC<Props> = ({
   name,
   imageUrl,
-  onClickAdd,
+  onSubmit,
+  price,
   className,
+  loading,
 }) => {
   //   const {
   //     size,
@@ -65,8 +69,6 @@ export const ChooseProductForm: React.FC<Props> = ({
       <div className="w-[490px] bg-[#f7f6f5] p-7">
         <Title text={name} size="md" className="font-extrabold mb-1" />
 
-        <p className="text-gray-400">{textDetaills}</p>
-
         {/* <div className="flex flex-col gap-4 mt-5">
           <GroupVariants
             items={availableSizes}
@@ -97,10 +99,11 @@ export const ChooseProductForm: React.FC<Props> = ({
         </div> */}
 
         <Button
-          //  onClick={handleClickAdd}
+          loading={loading}
+          onClick={() => onSubmit?.()}
           className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10"
         >
-          Добавить в корзину за {totalPrice} ₽
+          Добавить в корзину за {price} ₽
         </Button>
       </div>
     </div>
