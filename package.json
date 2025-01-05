@@ -24,6 +24,7 @@
     "@radix-ui/react-slot": "^1.1.1",
     "@reactuses/core": "^5.0.23",
     "@types/bcrypt": "^5.0.2",
+    "@types/qs": "^6.9.17",
     "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.1",
@@ -31,6 +32,7 @@
     "lucide-react": "^0.468.0",
     "next": "14.2.16",
     "prisma": "^6.1.0",
+    "qs": "^6.13.1",
     "react": "^18",
     "react-dom": "^18",
     "react-use": "^17.6.0",
@@ -38,6 +40,7 @@
     "tailwindcss-animate": "^1.0.7",
     "ts-node": "^10.9.2",
     "vaul": "^1.1.2",
+    "zod": "^3.24.1",
     "zustand": "^5.0.2"
   },
   "devDependencies": {
