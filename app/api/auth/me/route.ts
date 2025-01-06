@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { prisma } from '@/prisma/prisma-client'
 import { authOptions } from '@/shared/constants/auth-options'
 import { getServerSession } from 'next-auth/next'
@@ -27,12 +29,11 @@ export async function GET(req: any, res: any) {
       },
     })
 
-    return NextResponse.json(data)
+    return res.status(200).json(data)
   } catch (error) {
     console.log(error)
-    return NextResponse.json(
-      { message: '[USER_GET] Server error' },
-      { status: 500 }
-    )
+    return res.status(500).json({ message: '[USER_GET] Server error' })
   }
 }
+
+/* eslint-enable @typescript-eslint/no-explicit-any */
